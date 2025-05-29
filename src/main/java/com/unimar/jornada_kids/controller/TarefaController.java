@@ -32,7 +32,6 @@ import com.unimar.jornada_kids.service.TarefaService;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/v1/tarefas")
 public class TarefaController {
 	

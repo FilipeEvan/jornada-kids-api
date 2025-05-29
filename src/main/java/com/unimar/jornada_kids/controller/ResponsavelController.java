@@ -34,7 +34,6 @@ import com.unimar.jornada_kids.service.ResponsavelService;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/v1/responsaveis")
 public class ResponsavelController {
 	

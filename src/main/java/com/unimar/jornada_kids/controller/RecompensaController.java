@@ -32,7 +32,6 @@ import com.unimar.jornada_kids.service.RecompensaService;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/v1/recompensas")
 public class RecompensaController {
 	

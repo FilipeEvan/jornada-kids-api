@@ -33,7 +33,6 @@ import com.unimar.jornada_kids.service.CriancaService;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/v1/criancas")
 public class CriancaController {
 	
