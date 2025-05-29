@@ -3,7 +3,6 @@ package com.unimar.jornada_kids.model.dto.tarefa;
 import java.time.LocalDateTime;
 
 import com.unimar.jornada_kids.model.enumeration.PrioridadeTarefa;
-import com.unimar.jornada_kids.model.enumeration.SituacaoTarefa;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
@@ -32,22 +31,18 @@ public class TarefaNovaDTO {
 	@NotNull(message = "A prioridade não pode ser nula")
 	private PrioridadeTarefa prioridade;
 	
-	@NotNull(message = "A situação da tarefa não pode ser nula")
-	private SituacaoTarefa situacao;
-	
 	@NotNull(message = "A data e hora limite não pode ser nula")
 	@Future(message = "A data e hora limite deve ser no futuro")
 	private LocalDateTime dataHoraLimite;
 
 	public TarefaNovaDTO(Integer idResponsavel, Integer idCrianca, String titulo, long pontuacaoTotal,
-			PrioridadeTarefa prioridade, SituacaoTarefa situacao, LocalDateTime dataHoraLimite) {
+			PrioridadeTarefa prioridade, LocalDateTime dataHoraLimite) {
 		super();
 		this.idResponsavel = idResponsavel;
 		this.idCrianca = idCrianca;
 		this.titulo = titulo;
 		this.pontuacaoTotal = pontuacaoTotal;
 		this.prioridade = prioridade;
-		this.situacao = situacao;
 		this.dataHoraLimite = dataHoraLimite;
 	}
 
@@ -91,14 +86,6 @@ public class TarefaNovaDTO {
 		this.prioridade = prioridade;
 	}
 
-	public SituacaoTarefa getSituacao() {
-		return situacao;
-	}
-
-	public void setSituacao(SituacaoTarefa situacao) {
-		this.situacao = situacao;
-	}
-
 	public LocalDateTime getDataHoraLimite() {
 		return dataHoraLimite;
 	}
@@ -110,8 +97,7 @@ public class TarefaNovaDTO {
 	@Override
 	public String toString() {
 		return "TarefaNovaDTO [idResponsavel=" + idResponsavel + ", idCrianca=" + idCrianca + ", titulo=" + titulo
-				+ ", pontuacaoTotal=" + pontuacaoTotal + ", prioridade=" + prioridade + ", situacao=" + situacao
-				+ ", dataHoraLimite=" + dataHoraLimite + "]";
+				+ ", pontuacaoTotal=" + pontuacaoTotal + ", prioridade=" + prioridade + ", dataHoraLimite=" + dataHoraLimite + "]";
 	}
 
 }

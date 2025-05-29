@@ -10,6 +10,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ import com.unimar.jornada_kids.service.ResponsavelService;
 import jakarta.validation.Valid;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/v1/responsaveis")
 public class ResponsavelController {
 	

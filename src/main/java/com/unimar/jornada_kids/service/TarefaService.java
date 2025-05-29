@@ -58,7 +58,7 @@ public class TarefaService {
 		Responsavel responsavel = responsavelRepository.findById(tarefaNova.getIdResponsavel())
 				.orElseThrow(() -> new UsuarioNotFoundException("Responsável não encontrado"));
 		
-		Crianca crianca = criancaRepository.findById(tarefaNova.getIdResponsavel())
+		Crianca crianca = criancaRepository.findById(tarefaNova.getIdCrianca())
 				.orElseThrow(() -> new UsuarioNotFoundException("Criança não encontrada"));
 		
 		tarefa.setResponsavel(responsavel);
