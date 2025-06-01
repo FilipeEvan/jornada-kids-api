@@ -16,6 +16,8 @@ import com.unimar.jornada_kids.model.entity.Crianca;
 import com.unimar.jornada_kids.model.entity.Responsavel;
 import com.unimar.jornada_kids.model.entity.Tarefa;
 import com.unimar.jornada_kids.model.entity.Usuario;
+import com.unimar.jornada_kids.model.enumeration.PrioridadeTarefa;
+import com.unimar.jornada_kids.model.enumeration.SituacaoTarefa;
 import com.unimar.jornada_kids.repository.CriancaRepository;
 import com.unimar.jornada_kids.repository.ResponsavelRepository;
 import com.unimar.jornada_kids.repository.UsuarioRepository;
@@ -53,11 +55,22 @@ public class CriancaService {
 				.toList();
 	}
 	
-	public List<TarefaResumidaDTO> listarTarefas(int id) {
+	public List<TarefaResumidaDTO> listarTarefas(int id, PrioridadeTarefa prioridade, SituacaoTarefa situacao) {
 	    Crianca crianca = criancaRepository.findById(id)
 	        .orElseThrow(() -> new UsuarioNotFoundException("Criança não encontrada"));
 
 	    List<Tarefa> tarefas = crianca.getTarefas(); 
+	    
+	    if (prioridade != null) 
+	    	tarefas = tarefas.stream()
+	    			.filter(t -> t.getPrioridade() == prioridade)
+					.toList();
+	    
+	    
+	    if (situacao != null) 
+	    	tarefas = tarefas.stream()
+	    			.filter(t -> t.getSituacao() == situacao)
+					.toList();
 
 	    return tarefas.stream()
 				.map(tarefaMapper::paraResumidaDTO)
@@ -86,6 +99,10 @@ public class CriancaService {
 		
 		crianca.setUsuario(usuario);
 		crianca.setResponsavel(responsavel);
+		crianca.setNivel(0);
+		crianca.setXp(0);
+		crianca.setXpTotal(0);
+		crianca.setPonto(0);
 	    
 		return criancaRepository.save(crianca);
     }

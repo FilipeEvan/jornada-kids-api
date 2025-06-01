@@ -6,7 +6,7 @@ import com.unimar.jornada_kids.mapper.CriancaMapper;
 import com.unimar.jornada_kids.mapper.CriancaRecompensaMapper;
 import com.unimar.jornada_kids.mapper.RecompensaMapper;
 import com.unimar.jornada_kids.model.dto.crianca_recompensa.CriancaRecompensaDetalhadaDTO;
-import com.unimar.jornada_kids.model.dto.crianca_recompensa.CriancaRecompensaNovaDTO;
+import com.unimar.jornada_kids.model.dto.crianca_recompensa.RecompensaResgatadaDTO;
 import com.unimar.jornada_kids.model.entity.CriancaRecompensa;
 
 @Component
@@ -22,11 +22,10 @@ public class CriancaRecompensaMapperImpl implements CriancaRecompensaMapper {
 	}
 
 	@Override
-	public CriancaRecompensa paraEntity(CriancaRecompensaNovaDTO dto) {
+	public CriancaRecompensa paraEntity(RecompensaResgatadaDTO dto) {
 		CriancaRecompensa criancaRecompensa = new CriancaRecompensa();
 		
-		dto.setQuantidadeResgatada(criancaRecompensa.getQuantidadeResgatada());
-		dto.setDataHoraResgate(criancaRecompensa.getDataHoraResgate());
+		criancaRecompensa.setQuantidadeResgatada(dto.getQuantidadeResgatada());
 		
 		return criancaRecompensa;
 	}

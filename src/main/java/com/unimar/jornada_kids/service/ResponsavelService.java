@@ -7,18 +7,24 @@ import org.springframework.stereotype.Component;
 
 import com.unimar.jornada_kids.exception.UsuarioNotFoundException;
 import com.unimar.jornada_kids.mapper.CriancaMapper;
+import com.unimar.jornada_kids.mapper.RecompensaMapper;
 import com.unimar.jornada_kids.mapper.ResponsavelMapper;
 import com.unimar.jornada_kids.mapper.TarefaMapper;
 import com.unimar.jornada_kids.mapper.UsuarioMapper;
 import com.unimar.jornada_kids.model.dto.crianca.CriancaResumidaDTO;
+import com.unimar.jornada_kids.model.dto.recompensa.RecompensaResumidaDTO;
 import com.unimar.jornada_kids.model.dto.responsavel.ResponsavelDetalhadoDTO;
 import com.unimar.jornada_kids.model.dto.responsavel.ResponsavelNovoDTO;
 import com.unimar.jornada_kids.model.dto.responsavel.ResponsavelResumidoDTO;
 import com.unimar.jornada_kids.model.dto.tarefa.TarefaResumidaDTO;
 import com.unimar.jornada_kids.model.entity.Crianca;
+import com.unimar.jornada_kids.model.entity.Recompensa;
 import com.unimar.jornada_kids.model.entity.Responsavel;
 import com.unimar.jornada_kids.model.entity.Tarefa;
 import com.unimar.jornada_kids.model.entity.Usuario;
+import com.unimar.jornada_kids.model.enumeration.PrioridadeTarefa;
+import com.unimar.jornada_kids.model.enumeration.SituacaoRecompensa;
+import com.unimar.jornada_kids.model.enumeration.SituacaoTarefa;
 import com.unimar.jornada_kids.repository.ResponsavelRepository;
 import com.unimar.jornada_kids.repository.UsuarioRepository;
 
@@ -31,6 +37,8 @@ public class ResponsavelService {
 	
 	private CriancaMapper criancaMapper;
 	
+	private RecompensaMapper recompensaMapper;
+	
 	private ResponsavelMapper responsavelMapper;
 	
 	private TarefaMapper tarefaMapper;
@@ -38,10 +46,11 @@ public class ResponsavelService {
 	private UsuarioMapper usuarioMapper;
 	
 	public ResponsavelService(ResponsavelRepository responsavelRepository, UsuarioRepository usuarioRepository, 
-			CriancaMapper criancaMapper, ResponsavelMapper responsavelMapper, TarefaMapper tarefaMapper, UsuarioMapper usuarioMapper) {
+			CriancaMapper criancaMapper, RecompensaMapper recompensaMapper, ResponsavelMapper responsavelMapper, TarefaMapper tarefaMapper, UsuarioMapper usuarioMapper) {
 		this.criancaMapper = criancaMapper;
 		this.responsavelRepository = responsavelRepository;
 		this.usuarioRepository = usuarioRepository;
+		this.recompensaMapper = recompensaMapper;
 		this.responsavelMapper = responsavelMapper;
 		this.tarefaMapper = tarefaMapper;
 		this.usuarioMapper = usuarioMapper;
@@ -66,14 +75,43 @@ public class ResponsavelService {
 				.toList();
 	}
 	
-	public List<TarefaResumidaDTO> listarTarefas(int id) {
+	public List<TarefaResumidaDTO> listarTarefas(int id, PrioridadeTarefa prioridade, SituacaoTarefa situacao) {
 	    Responsavel responsavel = responsavelRepository.findById(id)
 	        .orElseThrow(() -> new UsuarioNotFoundException("Responsável não encontrada"));
 
 	    List<Tarefa> tarefas = responsavel.getTarefas(); 
+	    
+	    if (prioridade != null) 
+	    	tarefas = tarefas.stream()
+	    			.filter(t -> t.getPrioridade() == prioridade)
+					.toList();
+	    
+	    
+	    if (situacao != null) 
+	    	tarefas = tarefas.stream()
+	    			.filter(t -> t.getSituacao() == situacao)
+					.toList();
+	    
 
 	    return tarefas.stream()
 				.map(tarefaMapper::paraResumidaDTO)
+				.toList();
+	}
+	
+	public List<RecompensaResumidaDTO> listarRecompensas(int id, SituacaoRecompensa situacao) {
+	    Responsavel responsavel = responsavelRepository.findById(id)
+	        .orElseThrow(() -> new UsuarioNotFoundException("Responsável não encontrada"));
+
+	    List<Recompensa> recompensas = responsavel.getRecompensas(); 
+	    
+	    if (situacao != null) 
+	    	recompensas = recompensas.stream()
+	    			.filter(r -> r.getSituacao() == situacao)
+					.toList();
+	    
+
+	    return recompensas.stream()
+				.map(recompensaMapper::paraResumidaDTO)
 				.toList();
 	}
 	

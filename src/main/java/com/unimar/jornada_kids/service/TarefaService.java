@@ -12,6 +12,8 @@ import com.unimar.jornada_kids.model.dto.tarefa.TarefaResumidaDTO;
 import com.unimar.jornada_kids.model.entity.Crianca;
 import com.unimar.jornada_kids.model.entity.Responsavel;
 import com.unimar.jornada_kids.model.entity.Tarefa;
+import com.unimar.jornada_kids.model.enumeration.PrioridadeTarefa;
+import com.unimar.jornada_kids.model.enumeration.SituacaoTarefa;
 import com.unimar.jornada_kids.repository.CriancaRepository;
 import com.unimar.jornada_kids.repository.ResponsavelRepository;
 import com.unimar.jornada_kids.repository.TarefaRepository;
@@ -35,8 +37,19 @@ public class TarefaService {
 		this.tarefaMapper = tarefaMapper;
 	}
 	
-	public List<TarefaResumidaDTO> listarTodas() {
+	public List<TarefaResumidaDTO> listarTodas(PrioridadeTarefa prioridade, SituacaoTarefa situacao) {
 		List<Tarefa> tarefas = tarefaRepository.findAll();
+		
+		if (prioridade != null) 
+	    	tarefas = tarefas.stream()
+	    			.filter(t -> t.getPrioridade() == prioridade)
+					.toList();
+	    
+	    
+	    if (situacao != null) 
+	    	tarefas = tarefas.stream()
+	    			.filter(t -> t.getSituacao() == situacao)
+					.toList();
 		
 		return tarefas.stream()
 				.map(tarefaMapper::paraResumidaDTO)

@@ -1,8 +1,10 @@
 package com.unimar.jornada_kids.model.dto.recompensa;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.unimar.jornada_kids.model.dto.responsavel.ResponsavelResumidoDTO;
 
+@JsonFilter("RecompensaFilter")
 public class RecompensaResumidaDTO {
 	
 	public RecompensaResumidaDTO() {}

@@ -10,13 +10,13 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -24,11 +24,15 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.unimar.jornada_kids.model.dto.crianca.CriancaResumidaDTO;
+import com.unimar.jornada_kids.model.dto.recompensa.RecompensaResumidaDTO;
 import com.unimar.jornada_kids.model.dto.responsavel.ResponsavelDetalhadoDTO;
 import com.unimar.jornada_kids.model.dto.responsavel.ResponsavelNovoDTO;
 import com.unimar.jornada_kids.model.dto.responsavel.ResponsavelResumidoDTO;
 import com.unimar.jornada_kids.model.dto.tarefa.TarefaResumidaDTO;
 import com.unimar.jornada_kids.model.entity.Responsavel;
+import com.unimar.jornada_kids.model.enumeration.PrioridadeTarefa;
+import com.unimar.jornada_kids.model.enumeration.SituacaoRecompensa;
+import com.unimar.jornada_kids.model.enumeration.SituacaoTarefa;
 import com.unimar.jornada_kids.service.ResponsavelService;
 
 import jakarta.validation.Valid;
@@ -77,8 +81,11 @@ public class ResponsavelController {
 	}
 	
 	@GetMapping("/{id}/tarefas")
-	public ResponseEntity<MappingJacksonValue> listarTarefasPorResponsavel(@PathVariable int id) {
-		List<TarefaResumidaDTO> tarefas = responsavelService.listarTarefas(id);
+	public ResponseEntity<MappingJacksonValue> listarTarefasPorResponsavel(
+			@PathVariable int id, 
+			@RequestParam(required = false) PrioridadeTarefa prioridade,
+			@RequestParam(required = false) SituacaoTarefa situacao) {
+		List<TarefaResumidaDTO> tarefas = responsavelService.listarTarefas(id, prioridade, situacao);
 		
 		MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(tarefas);
 		
@@ -90,6 +97,28 @@ public class ResponsavelController {
 				.addFilter("CriancaFilter", criancaFilter)
 				.addFilter("ResponsavelFilter", responsavelFilter)
 				.addFilter("TarefaFilter", tarefaFilter);;
+		
+		mappingJacksonValue.setFilters(filters);
+		
+		return ResponseEntity.ok(mappingJacksonValue);
+	}
+	
+	@GetMapping("/{id}/recompensas")
+	public ResponseEntity<MappingJacksonValue> listarRecompensasPorResponsavel(
+			@PathVariable int id, 
+			@RequestParam(required = false) SituacaoRecompensa situacao) {
+		List<RecompensaResumidaDTO> recompensas = responsavelService.listarRecompensas(id, situacao);
+		
+		MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(recompensas);
+		
+		SimpleBeanPropertyFilter criancaFilter = SimpleBeanPropertyFilter.serializeAllExcept("responsavel");
+		SimpleBeanPropertyFilter responsavelFilter = SimpleBeanPropertyFilter.serializeAll();
+		SimpleBeanPropertyFilter recompensaFilter = SimpleBeanPropertyFilter.serializeAllExcept("responsavel");
+		
+		FilterProvider filters = new SimpleFilterProvider()
+				.addFilter("CriancaFilter", criancaFilter)
+				.addFilter("ResponsavelFilter", responsavelFilter)
+				.addFilter("RecompensaFilter", recompensaFilter);;
 		
 		mappingJacksonValue.setFilters(filters);
 		

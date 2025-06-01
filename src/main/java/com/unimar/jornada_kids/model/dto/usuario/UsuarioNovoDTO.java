@@ -11,11 +11,12 @@ public class UsuarioNovoDTO {
 	
 	public UsuarioNovoDTO() {}
 	
-	@NotBlank(message = "O nome não pode estar em branco")
-	@Size(min = 2, message = "O nome deve ter pelo menos 2 caracteres")
+	@NotBlank(message = "O nome completo não pode estar em branco")
+	@Size(min = 2, message = "O nome completo deve ter pelo menos 2 caracteres")
 	private String nomeCompleto;
 	
-	@Size(min = 2, message = "O nome deve ter pelo menos 2 caracteres")
+	@NotBlank(message = "O nome de usuário não pode estar em branco")
+	@Size(min = 2, message = "O nome de usuário deve ter pelo menos 2 caracteres")
 	private String nomeUsuario;
 	
 	@NotBlank(message = "O e-mail não pode estar em branco")

@@ -10,23 +10,25 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.unimar.jornada_kids.model.dto.crianca_recompensa.RecompensaResgatadaDTO;
 import com.unimar.jornada_kids.model.dto.recompensa.RecompensaDetalhadaDTO;
 import com.unimar.jornada_kids.model.dto.recompensa.RecompensaNovaDTO;
 import com.unimar.jornada_kids.model.dto.recompensa.RecompensaResumidaDTO;
 import com.unimar.jornada_kids.model.entity.Recompensa;
+import com.unimar.jornada_kids.model.enumeration.SituacaoRecompensa;
 import com.unimar.jornada_kids.service.RecompensaService;
 
 import jakarta.validation.Valid;
@@ -42,15 +44,19 @@ public class RecompensaController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<MappingJacksonValue> listarRecompensas() {
-		List<RecompensaResumidaDTO> recompensas = recompensaService.listarTodas();
+	public ResponseEntity<MappingJacksonValue> listarRecompensas(
+			@RequestParam(required = false) SituacaoRecompensa situacao) {
+		List<RecompensaResumidaDTO> recompensas = recompensaService.listarTodas(situacao);
 		
 		MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(recompensas);
 		
-		SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAll();
+		SimpleBeanPropertyFilter responsavelFilter = SimpleBeanPropertyFilter.serializeAll();
+		SimpleBeanPropertyFilter recompensaFilter = SimpleBeanPropertyFilter.serializeAll();
 		
 		FilterProvider filters = 
-				new SimpleFilterProvider().addFilter("ResponsavelFilter", filter );
+				new SimpleFilterProvider()
+				.addFilter("ResponsavelFilter", responsavelFilter )
+				.addFilter("RecompensaFilter", recompensaFilter );
 		
 		mappingJacksonValue.setFilters(filters);
 		
@@ -61,7 +67,7 @@ public class RecompensaController {
 	public ResponseEntity<EntityModel<RecompensaDetalhadaDTO>> buscarRecompensaPorId(@PathVariable int id) {
 		EntityModel<RecompensaDetalhadaDTO> entityModel = EntityModel.of(recompensaService.buscarPorId(id));
 		
-		WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).listarRecompensas());
+		WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).listarRecompensas(null));
 		entityModel.add(link.withRel("lista-de-recompensas"));
 		
 		return ResponseEntity.ok(entityModel);
@@ -79,10 +85,19 @@ public class RecompensaController {
 		return ResponseEntity.created(localizacao).build();
 	}
 	
-	@DeleteMapping("{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletarRecompensaPorId(@PathVariable int id) {
 		recompensaService.deletar(id);
 		
+		return ResponseEntity.noContent().build();
+	}
+	
+	@PostMapping("/{id}/resgatar")
+	public ResponseEntity<Void> resgatarRecompensa(
+			@PathVariable int id, 
+			@Valid @RequestBody RecompensaResgatadaDTO recompensaResgatada) {
+		recompensaService.resgatar(id, recompensaResgatada);	
+
 		return ResponseEntity.noContent().build();
 	}
 
