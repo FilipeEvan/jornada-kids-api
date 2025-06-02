@@ -40,6 +40,8 @@ public class Tarefa {
 	
 	private String titulo;
 	
+	private String descricao;
+	
 	private long pontuacaoTotal;
 	
 	private long pontuacaoConquistada;
@@ -63,12 +65,13 @@ public class Tarefa {
 	@LastModifiedDate
 	private LocalDateTime atualizadoEm;
 
-	public Tarefa(Responsavel responsavel, Crianca crianca, String titulo, long pontuacaoTotal, long pontuacaoConquistada, 
+	public Tarefa(Responsavel responsavel, Crianca crianca, String titulo, String descricao, long pontuacaoTotal, long pontuacaoConquistada, 
 			int estrela, PrioridadeTarefa prioridade, SituacaoTarefa situacao, LocalDateTime dataHoraLimite, LocalDateTime dataHoraConclusao) {
 		super();
 		this.responsavel = responsavel;
 		this.crianca = crianca;
 		this.titulo = titulo;
+		this.descricao = descricao;
 		this.pontuacaoTotal = pontuacaoTotal;
 		this.pontuacaoConquistada = pontuacaoConquistada;
 		this.estrela = estrela;
@@ -104,6 +107,14 @@ public class Tarefa {
 
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
+	}
+	
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	public long getPontuacaoTotal() {
@@ -173,10 +184,10 @@ public class Tarefa {
 	@Override
 	public String toString() {
 		return "Tarefa [id=" + id + ", responsavel=" + responsavel + ", crianca=" + crianca + ", titulo=" + titulo
-				+ ", pontuacaoTotal=" + pontuacaoTotal + ", pontuacaoConquistada=" + pontuacaoConquistada + ", estrela="
-				+ estrela + ", prioridade=" + prioridade + ", situacao=" + situacao + ", dataHoraLimite="
-				+ dataHoraLimite + ", dataHoraConclusao=" + dataHoraConclusao + ", criadoEm=" + criadoEm
-				+ ", atualizadoEm=" + atualizadoEm + "]";
+				+ ", descricao=" + descricao + ", pontuacaoTotal=" + pontuacaoTotal + ", pontuacaoConquistada=" 
+				+ pontuacaoConquistada + ", estrela=" + estrela + ", prioridade=" + prioridade + ", situacao=" 
+				+ situacao + ", dataHoraLimite=" + dataHoraLimite + ", dataHoraConclusao=" + dataHoraConclusao 
+				+ ", criadoEm=" + criadoEm + ", atualizadoEm=" + atualizadoEm + "]";
 	}
 
 }

@@ -20,6 +20,8 @@ public class TarefaDetalhadaDTO {
 	
 	private String titulo;
 	
+	private String descricao;
+	
 	private long pontuacaoTotal;
 	
 	private long pontuacaoConquistada;
@@ -39,14 +41,14 @@ public class TarefaDetalhadaDTO {
 	private LocalDateTime atualizadoEm;
 
 	public TarefaDetalhadaDTO(Integer id, ResponsavelDetalhadoDTO responsavelDetalhado,
-			CriancaDetalhadaDTO criancaDetalhada, String titulo, long pontuacaoTotal, long pontuacaoConquistada,
-			int estrela, String prioridade, String situacao, LocalDateTime dataHoraLimite,
+			CriancaDetalhadaDTO criancaDetalhada, String titulo, String descricao, long pontuacaoTotal, 
+			long pontuacaoConquistada, int estrela, String prioridade, String situacao, LocalDateTime dataHoraLimite,
 			LocalDateTime dataHoraConclusao, LocalDateTime criadoEm, LocalDateTime atualizadoEm) {
-		super();
 		this.id = id;
 		this.responsavelDetalhado = responsavelDetalhado;
 		this.criancaDetalhada = criancaDetalhada;
 		this.titulo = titulo;
+		this.descricao = descricao;
 		this.pontuacaoTotal = pontuacaoTotal;
 		this.pontuacaoConquistada = pontuacaoConquistada;
 		this.estrela = estrela;
@@ -88,6 +90,14 @@ public class TarefaDetalhadaDTO {
 
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
+	}
+	
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	public long getPontuacaoTotal() {
@@ -164,11 +174,12 @@ public class TarefaDetalhadaDTO {
 
 	@Override
 	public String toString() {
-		return "TarefaDetalhadaDTO [id=" + id + ", responsavelDetalhadoDTO=" + responsavelDetalhado
-				+ ", criancaDetalhada=" + criancaDetalhada + ", titulo=" + titulo + ", pontuacaoTotal=" + pontuacaoTotal
-				+ ", pontuacaoConquistada=" + pontuacaoConquistada + ", estrela=" + estrela + ", prioridade="
-				+ prioridade + ", situacao=" + situacao + ", dataHoraLimite=" + dataHoraLimite + ", dataHoraConclusao="
-				+ dataHoraConclusao + ", criadoEm=" + criadoEm + ", atualizadoEm=" + atualizadoEm + "]";
+		return "TarefaDetalhadaDTO [id=" + id + ", responsavelDetalhado=" + responsavelDetalhado + ", criancaDetalhada="
+				+ criancaDetalhada + ", titulo=" + titulo + ", descricao=" + descricao + ", pontuacaoTotal="
+				+ pontuacaoTotal + ", pontuacaoConquistada=" + pontuacaoConquistada + ", estrela=" + estrela
+				+ ", prioridade=" + prioridade + ", situacao=" + situacao + ", dataHoraLimite=" + dataHoraLimite
+				+ ", dataHoraConclusao=" + dataHoraConclusao + ", criadoEm=" + criadoEm + ", atualizadoEm="
+				+ atualizadoEm + "]";
 	}
 
 }

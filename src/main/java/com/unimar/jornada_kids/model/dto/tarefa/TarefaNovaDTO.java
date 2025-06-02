@@ -24,6 +24,9 @@ public class TarefaNovaDTO {
 	@Size(min = 2, message = "O título deve ter pelo menos 2 caracteres")
 	private String titulo;
 	
+	@NotBlank(message = "A descrição não pode estar em branco")
+	private String descricao;
+	
 	@NotNull(message = "A pontuação total não pode ser nula")
 	@Positive(message = "A pontuação total não pode ser zero ou negativa")
 	private long pontuacaoTotal;
@@ -35,12 +38,13 @@ public class TarefaNovaDTO {
 	@Future(message = "A data e hora limite deve ser no futuro")
 	private LocalDateTime dataHoraLimite;
 
-	public TarefaNovaDTO(Integer idResponsavel, Integer idCrianca, String titulo, long pontuacaoTotal,
+	public TarefaNovaDTO(Integer idResponsavel, Integer idCrianca, String titulo, String descricao, long pontuacaoTotal,
 			PrioridadeTarefa prioridade, LocalDateTime dataHoraLimite) {
 		super();
 		this.idResponsavel = idResponsavel;
 		this.idCrianca = idCrianca;
 		this.titulo = titulo;
+		this.descricao = descricao;
 		this.pontuacaoTotal = pontuacaoTotal;
 		this.prioridade = prioridade;
 		this.dataHoraLimite = dataHoraLimite;
@@ -69,6 +73,14 @@ public class TarefaNovaDTO {
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
+	
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
 
 	public long getPontuacaoTotal() {
 		return pontuacaoTotal;
@@ -96,7 +108,7 @@ public class TarefaNovaDTO {
 
 	@Override
 	public String toString() {
-		return "TarefaNovaDTO [idResponsavel=" + idResponsavel + ", idCrianca=" + idCrianca + ", titulo=" + titulo
+		return "TarefaNovaDTO [idResponsavel=" + idResponsavel + ", idCrianca=" + idCrianca + ", titulo=" + titulo + ", descricao=" + descricao
 				+ ", pontuacaoTotal=" + pontuacaoTotal + ", prioridade=" + prioridade + ", dataHoraLimite=" + dataHoraLimite + "]";
 	}
 

@@ -27,6 +27,7 @@ public class TarefaMapperImpl implements TarefaMapper {
 		Tarefa tarefa = new Tarefa();
 		
 		tarefa.setTitulo(dto.getTitulo());
+		tarefa.setDescricao(dto.getDescricao());
 		tarefa.setPontuacaoTotal(dto.getPontuacaoTotal());
 		tarefa.setPrioridade(dto.getPrioridade());
 		tarefa.setDataHoraLimite(dto.getDataHoraLimite());
@@ -42,6 +43,7 @@ public class TarefaMapperImpl implements TarefaMapper {
 		dto.setResponsavelDetalhado(responsavelMapper.paraDetalhadoDTO(tarefa.getResponsavel()));
 		dto.setCriancaDetalhada(criancaMapper.paraDetalhadaDTO(tarefa.getCrianca()));
 		dto.setTitulo(tarefa.getTitulo());
+		dto.setDescricao(tarefa.getDescricao());
 		dto.setPontuacaoTotal(tarefa.getPontuacaoTotal());
 		dto.setPontuacaoConquistada(tarefa.getPontuacaoConquistada());
 		dto.setEstrela(tarefa.getEstrela());
