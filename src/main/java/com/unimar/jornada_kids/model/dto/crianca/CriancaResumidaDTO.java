@@ -19,16 +19,19 @@ public class CriancaResumidaDTO {
 	
 	private int nivel;
 	
+	private long ponto;
+	
 	@JsonProperty("responsavel")
 	private ResponsavelResumidoDTO responsavelResumidoDTO;
 
-	public CriancaResumidaDTO(Integer id, UsuarioResumidoDTO usuarioResumido, int idade, int nivel,
+	public CriancaResumidaDTO(Integer id, UsuarioResumidoDTO usuarioResumido, int idade, int nivel, long ponto,
 			ResponsavelResumidoDTO responsavelResumidoDTO) {
 		super();
 		this.id = id;
 		this.usuarioResumido = usuarioResumido;
 		this.idade = idade;
 		this.nivel = nivel;
+		this.ponto = ponto;
 		this.responsavelResumidoDTO = responsavelResumidoDTO;
 	}
 
@@ -63,6 +66,14 @@ public class CriancaResumidaDTO {
 	public void setNivel(int nivel) {
 		this.nivel = nivel;
 	}
+	
+	public long getPonto() {
+		return ponto;
+	}
+
+	public void setPonto(long ponto) {
+		this.ponto = ponto;
+	}
 
 	public ResponsavelResumidoDTO getResponsavelResumidoDTO() {
 		return responsavelResumidoDTO;
@@ -75,7 +86,7 @@ public class CriancaResumidaDTO {
 	@Override
 	public String toString() {
 		return "CriancaResumidaDTO [id=" + id + ", usuarioResumido=" + usuarioResumido + ", idade=" + idade + ", nivel="
-				+ nivel + ", responsavelResumidoDTO=" + responsavelResumidoDTO + "]";
+				+ nivel + ", ponto=" + ponto + ", responsavelResumidoDTO=" + responsavelResumidoDTO + "]";
 	}
 
 }

@@ -9,7 +9,6 @@ import com.unimar.jornada_kids.model.dto.tarefa.TarefaDetalhadaDTO;
 import com.unimar.jornada_kids.model.dto.tarefa.TarefaNovaDTO;
 import com.unimar.jornada_kids.model.dto.tarefa.TarefaResumidaDTO;
 import com.unimar.jornada_kids.model.entity.Tarefa;
-import com.unimar.jornada_kids.model.enumeration.SituacaoTarefa;
 
 @Component
 public class TarefaMapperImpl implements TarefaMapper {
@@ -29,12 +28,8 @@ public class TarefaMapperImpl implements TarefaMapper {
 		
 		tarefa.setTitulo(dto.getTitulo());
 		tarefa.setPontuacaoTotal(dto.getPontuacaoTotal());
-		tarefa.setPontuacaoConquistada(0);
-		tarefa.setEstrela(0);
 		tarefa.setPrioridade(dto.getPrioridade());
-		tarefa.setSituacao(SituacaoTarefa.P);
 		tarefa.setDataHoraLimite(dto.getDataHoraLimite());
-		tarefa.setDataHoraConclusao(null);
 		
 		return tarefa;
 	}
@@ -49,6 +44,7 @@ public class TarefaMapperImpl implements TarefaMapper {
 		dto.setTitulo(tarefa.getTitulo());
 		dto.setPontuacaoTotal(tarefa.getPontuacaoTotal());
 		dto.setPontuacaoConquistada(tarefa.getPontuacaoConquistada());
+		dto.setEstrela(tarefa.getEstrela());
 		dto.setPrioridade(tarefa.getPrioridade().obterRotulo());
 		dto.setSituacao(tarefa.getSituacao().obterRotulo());
 		dto.setDataHoraLimite(tarefa.getDataHoraLimite());
@@ -74,5 +70,5 @@ public class TarefaMapperImpl implements TarefaMapper {
 
 		return dto;
 	}
-
+	
 }

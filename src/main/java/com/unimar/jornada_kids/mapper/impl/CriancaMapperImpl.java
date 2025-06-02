@@ -59,6 +59,7 @@ public class CriancaMapperImpl implements CriancaMapper {
 		dto.setUsuarioResumido(usuarioMapper.paraResumidoDTO(crianca.getUsuario()));
 		dto.setIdade(Period.between(crianca.getDataNascimento(), LocalDate.now()).getYears());
 		dto.setNivel(crianca.getNivel());
+		dto.setPonto(crianca.getPonto());
 		dto.setResponsavelResumidoDTO(responsavelMapper.paraResumidoDTO(crianca.getResponsavel()));
 		
 		return dto;

@@ -4,7 +4,8 @@ public enum SituacaoTarefa {
 	
 	P("Pendente"),
 	E("Expirada"),
-	C("Concluída");
+	C("Concluída"),
+	A("Avaliada");
 
     private final String rotulo;
 

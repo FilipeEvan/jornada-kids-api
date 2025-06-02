@@ -1,11 +1,15 @@
 package com.unimar.jornada_kids.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.unimar.jornada_kids.exception.UsuarioNotFoundException;
 import com.unimar.jornada_kids.mapper.TarefaMapper;
+import com.unimar.jornada_kids.model.dto.tarefa.TarefaAvaliadaDTO;
 import com.unimar.jornada_kids.model.dto.tarefa.TarefaDetalhadaDTO;
 import com.unimar.jornada_kids.model.dto.tarefa.TarefaNovaDTO;
 import com.unimar.jornada_kids.model.dto.tarefa.TarefaResumidaDTO;
@@ -76,6 +80,10 @@ public class TarefaService {
 		
 		tarefa.setResponsavel(responsavel);
 		tarefa.setCrianca(crianca);
+		tarefa.setSituacao(SituacaoTarefa.P);
+		tarefa.setPontuacaoConquistada(0);
+		tarefa.setEstrela(0);
+		tarefa.setDataHoraConclusao(null);
 	    
 		return tarefaRepository.save(tarefa);
     }
@@ -85,6 +93,46 @@ public class TarefaService {
 			throw new UsuarioNotFoundException("Tarefa não encontrada");
 		
 		tarefaRepository.deleteById(id);
+	}
+	
+	public void concluir(int id) {
+		Tarefa tarefa = tarefaRepository.findById(id)
+				.orElseThrow(() -> new UsuarioNotFoundException("Tarefa não encontrada"));
+		
+		if (tarefa.getSituacao() != SituacaoTarefa.P) {
+	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tarefa não pode ser concluída");
+	    }
+		
+		tarefa.setDataHoraConclusao(LocalDateTime.now());
+		tarefa.setSituacao(SituacaoTarefa.C);
+
+		tarefaRepository.save(tarefa);
+	}
+	
+	public void avaliar(int id, TarefaAvaliadaDTO tarefaAvaliada) {
+		Tarefa tarefa = tarefaRepository.findById(id)
+				.orElseThrow(() -> new UsuarioNotFoundException("Tarefa não encontrada"));
+		
+		Crianca crianca = tarefa.getCrianca();
+		
+		if (tarefa.getSituacao() != SituacaoTarefa.C)
+	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tarefa não pode ser avaliada");
+	    
+	    long pontuacaoConquistada = (tarefaAvaliada.getEstrela() == 5)
+	            ? tarefa.getPontuacaoTotal()
+	            : Math.round(tarefa.getPontuacaoTotal() * (tarefaAvaliada.getEstrela() / 5.0));
+		
+		System.out.println(tarefaAvaliada.getEstrela());
+		System.out.println(pontuacaoConquistada);
+		tarefa.setEstrela(tarefaAvaliada.getEstrela());
+		tarefa.setSituacao(SituacaoTarefa.A);
+		tarefa.setPontuacaoConquistada(pontuacaoConquistada);
+		
+		tarefaRepository.save(tarefa);
+		
+		crianca.setPonto(crianca.getPonto() + pontuacaoConquistada);
+
+		criancaRepository.save(crianca);
 	}
 
 }

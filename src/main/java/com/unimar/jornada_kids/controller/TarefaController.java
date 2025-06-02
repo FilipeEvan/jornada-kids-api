@@ -23,6 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.unimar.jornada_kids.model.dto.tarefa.TarefaAvaliadaDTO;
 import com.unimar.jornada_kids.model.dto.tarefa.TarefaDetalhadaDTO;
 import com.unimar.jornada_kids.model.dto.tarefa.TarefaNovaDTO;
 import com.unimar.jornada_kids.model.dto.tarefa.TarefaResumidaDTO;
@@ -105,6 +106,22 @@ public class TarefaController {
 	public ResponseEntity<Void> deletarTarefaPorId(@PathVariable int id) {
 		tarefaService.deletar(id);
 		
+		return ResponseEntity.noContent().build();
+	}
+	
+	@PostMapping("/{id}/concluir")
+	public ResponseEntity<Void> concluirTarefa(@PathVariable int id) {
+		tarefaService.concluir(id);	
+
+		return ResponseEntity.noContent().build();
+	}
+	
+	@PostMapping("/{id}/avaliar")
+	public ResponseEntity<Void> avaliarTarefa(
+			@PathVariable int id, 
+			@Valid @RequestBody TarefaAvaliadaDTO tarefaAvaliada) {
+		tarefaService.avaliar(id, tarefaAvaliada);	
+
 		return ResponseEntity.noContent().build();
 	}
 
