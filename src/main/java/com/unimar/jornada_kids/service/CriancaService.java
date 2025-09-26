@@ -1,5 +1,6 @@
 package com.unimar.jornada_kids.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -55,7 +56,7 @@ public class CriancaService {
 				.toList();
 	}
 	
-	public List<TarefaResumidaDTO> listarTarefas(int id, PrioridadeTarefa prioridade, SituacaoTarefa situacao) {
+	public List<TarefaResumidaDTO> listarTarefas(int id, PrioridadeTarefa prioridade, SituacaoTarefa situacao, LocalDate data) {
 	    Crianca crianca = criancaRepository.findById(id)
 	        .orElseThrow(() -> new UsuarioNotFoundException("Criança não encontrada"));
 
@@ -71,6 +72,13 @@ public class CriancaService {
 	    	tarefas = tarefas.stream()
 	    			.filter(t -> t.getSituacao() == situacao)
 					.toList();
+	    
+	    if (data != null) {
+	        tarefas = tarefas.stream()
+	                .filter(t -> t.getDataHoraLimite() != null &&
+	                             t.getDataHoraLimite().toLocalDate().equals(data))
+	                .toList();
+	    }
 
 	    return tarefas.stream()
 				.map(tarefaMapper::paraResumidaDTO)

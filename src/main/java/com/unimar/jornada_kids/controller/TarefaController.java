@@ -4,8 +4,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -47,8 +49,9 @@ public class TarefaController {
 	@GetMapping
 	public ResponseEntity<MappingJacksonValue> listarTarefas(
 			@RequestParam(required = false) PrioridadeTarefa prioridade,
-			@RequestParam(required = false) SituacaoTarefa situacao) {
-		List<TarefaResumidaDTO> tarefas = tarefaService.listarTodas(prioridade, situacao);
+			@RequestParam(required = false) SituacaoTarefa situacao, 
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
+		List<TarefaResumidaDTO> tarefas = tarefaService.listarTodas(prioridade, situacao, data);
 		
 		MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(tarefas);
 		
@@ -71,7 +74,7 @@ public class TarefaController {
 	public ResponseEntity<MappingJacksonValue> buscarTarefaPorId(@PathVariable int id) {
 		EntityModel<TarefaDetalhadaDTO> entityModel = EntityModel.of(tarefaService.buscarPorId(id));
 		
-		WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).listarTarefas(null, null));
+		WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).listarTarefas(null, null, null));
 		entityModel.add(link.withRel("lista-de-tarefas"));
 		
 		MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(entityModel);
@@ -91,8 +94,10 @@ public class TarefaController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Tarefa> criarTarefa(@Valid @RequestBody TarefaNovaDTO tarefaNova) {
-		Tarefa tarefa = tarefaService.salvar(tarefaNova);
+	public ResponseEntity<Tarefa> criarTarefa(
+			@Valid @RequestBody TarefaNovaDTO tarefaNova,
+			@RequestParam(required = false, defaultValue = "1") int qtde) {
+		Tarefa tarefa = tarefaService.salvar(tarefaNova, qtde);
 
 		URI localizacao = ServletUriComponentsBuilder.fromCurrentRequest()
 						.path("/{id}")

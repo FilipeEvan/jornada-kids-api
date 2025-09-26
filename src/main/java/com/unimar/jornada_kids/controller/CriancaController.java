@@ -4,8 +4,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -66,8 +68,9 @@ public class CriancaController {
 	public ResponseEntity<MappingJacksonValue> listarTarefasPorCrianca(
 			@PathVariable int id, 
 			@RequestParam(required = false) PrioridadeTarefa prioridade,
-			@RequestParam(required = false) SituacaoTarefa situacao) {
-		List<TarefaResumidaDTO> tarefas = criancaService.listarTarefas(id, prioridade, situacao);
+			@RequestParam(required = false) SituacaoTarefa situacao,
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
+		List<TarefaResumidaDTO> tarefas = criancaService.listarTarefas(id, prioridade, situacao, data);
 		
 		MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(tarefas);
 		

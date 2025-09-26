@@ -1,5 +1,6 @@
 package com.unimar.jornada_kids.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
@@ -75,7 +76,7 @@ public class ResponsavelService {
 				.toList();
 	}
 	
-	public List<TarefaResumidaDTO> listarTarefas(int id, PrioridadeTarefa prioridade, SituacaoTarefa situacao) {
+	public List<TarefaResumidaDTO> listarTarefas(int id, PrioridadeTarefa prioridade, SituacaoTarefa situacao, LocalDate data) {
 	    Responsavel responsavel = responsavelRepository.findById(id)
 	        .orElseThrow(() -> new UsuarioNotFoundException("Responsável não encontrada"));
 
@@ -92,6 +93,12 @@ public class ResponsavelService {
 	    			.filter(t -> t.getSituacao() == situacao)
 					.toList();
 	    
+	    if (data != null) {
+	        tarefas = tarefas.stream()
+	                .filter(t -> t.getDataHoraLimite() != null &&
+	                             t.getDataHoraLimite().toLocalDate().equals(data))
+	                .toList();
+	    }
 
 	    return tarefas.stream()
 				.map(tarefaMapper::paraResumidaDTO)

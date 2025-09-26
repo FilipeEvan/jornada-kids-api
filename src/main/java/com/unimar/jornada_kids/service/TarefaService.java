@@ -1,5 +1,6 @@
 package com.unimar.jornada_kids.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class TarefaService {
 		this.tarefaMapper = tarefaMapper;
 	}
 	
-	public List<TarefaResumidaDTO> listarTodas(PrioridadeTarefa prioridade, SituacaoTarefa situacao) {
+	public List<TarefaResumidaDTO> listarTodas(PrioridadeTarefa prioridade, SituacaoTarefa situacao, LocalDate data) {
 		List<Tarefa> tarefas = tarefaRepository.findAll();
 		
 		if (prioridade != null) 
@@ -54,6 +55,13 @@ public class TarefaService {
 	    	tarefas = tarefas.stream()
 	    			.filter(t -> t.getSituacao() == situacao)
 					.toList();
+	    
+	    if (data != null) {
+	        tarefas = tarefas.stream()
+	                .filter(t -> t.getDataHoraLimite() != null &&
+	                             t.getDataHoraLimite().toLocalDate().equals(data))
+	                .toList();
+	    }
 		
 		return tarefas.stream()
 				.map(tarefaMapper::paraResumidaDTO)
@@ -69,8 +77,8 @@ public class TarefaService {
 		return tarefaDetalhada;
 	}
 	
-	public Tarefa salvar(TarefaNovaDTO tarefaNova) {
-		Tarefa tarefa = tarefaMapper.paraEntity(tarefaNova);
+	public Tarefa salvar(TarefaNovaDTO tarefaNova, int qtde) {
+		Tarefa original = new Tarefa();
 		
 		Responsavel responsavel = responsavelRepository.findById(tarefaNova.getIdResponsavel())
 				.orElseThrow(() -> new UsuarioNotFoundException("Responsável não encontrado"));
@@ -78,14 +86,25 @@ public class TarefaService {
 		Crianca crianca = criancaRepository.findById(tarefaNova.getIdCrianca())
 				.orElseThrow(() -> new UsuarioNotFoundException("Criança não encontrada"));
 		
-		tarefa.setResponsavel(responsavel);
-		tarefa.setCrianca(crianca);
-		tarefa.setSituacao(SituacaoTarefa.P);
-		tarefa.setPontuacaoConquistada(0);
-		tarefa.setEstrela(0);
-		tarefa.setDataHoraConclusao(null);
-	    
-		return tarefaRepository.save(tarefa);
+		for (int i = 0; i < qtde; i++) {
+			Tarefa tarefa = tarefaMapper.paraEntity(tarefaNova);
+		
+			tarefa.setResponsavel(responsavel);
+			tarefa.setCrianca(crianca);
+			tarefa.setSituacao(SituacaoTarefa.P);
+			tarefa.setPontuacaoConquistada(0);
+			tarefa.setEstrela(0);
+			tarefa.setDataHoraConclusao(null);
+
+			tarefa.setDataHoraLimite(tarefa.getDataHoraLimite().plusDays(i));
+	        tarefa = tarefaRepository.save(tarefa);
+
+	        if (i == 0) {
+	            original = tarefa; 
+	        } 
+		}
+		
+		return original;
     }
 	
 	public void deletar(int id) {
