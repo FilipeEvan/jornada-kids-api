@@ -141,8 +141,6 @@ public class TarefaService {
 	            ? tarefa.getPontuacaoTotal()
 	            : Math.round(tarefa.getPontuacaoTotal() * (tarefaAvaliada.getEstrela() / 5.0));
 		
-		System.out.println(tarefaAvaliada.getEstrela());
-		System.out.println(pontuacaoConquistada);
 		tarefa.setEstrela(tarefaAvaliada.getEstrela());
 		tarefa.setSituacao(SituacaoTarefa.A);
 		tarefa.setPontuacaoConquistada(pontuacaoConquistada);

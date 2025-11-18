@@ -19,7 +19,8 @@ public class ResponsavelNovoDTO {
 	@NotNull(message = "O tipo de responsável não pode ser nulo")
 	private TipoResponsavel tipo;
 
-	public ResponsavelNovoDTO(UsuarioNovoDTO usuarioNovo, TipoResponsavel tipo) {
+	public ResponsavelNovoDTO(@NotNull(message = "O usuário não pode ser nulo") @Valid UsuarioNovoDTO usuarioNovo,
+			@NotNull(message = "O tipo de responsável não pode ser nulo") TipoResponsavel tipo) {
 		super();
 		this.usuarioNovo = usuarioNovo;
 		this.tipo = tipo;

@@ -25,7 +25,9 @@ public class CriancaNovaDTO {
 	@NotNull(message = "O id do responsável não pode ser nulo")
 	private Integer idResponsavel;
 
-	public CriancaNovaDTO(UsuarioNovoDTO usuarioNovo, LocalDate dataNascimento, Integer idResponsavel) {
+	public CriancaNovaDTO(@NotNull(message = "O usuário não pode ser nulo") @Valid UsuarioNovoDTO usuarioNovo,
+			@NotNull(message = "A data de nascimento não pode ser nula") @Past(message = "A data de nascimento deve ser no passado") LocalDate dataNascimento,
+			@NotNull(message = "O id do responsável não pode ser nulo") Integer idResponsavel) {
 		super();
 		this.usuarioNovo = usuarioNovo;
 		this.dataNascimento = dataNascimento;

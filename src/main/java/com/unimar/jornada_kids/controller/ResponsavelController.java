@@ -99,7 +99,7 @@ public class ResponsavelController {
 		FilterProvider filters = new SimpleFilterProvider()
 				.addFilter("CriancaFilter", criancaFilter)
 				.addFilter("ResponsavelFilter", responsavelFilter)
-				.addFilter("TarefaFilter", tarefaFilter);;
+				.addFilter("TarefaFilter", tarefaFilter);
 		
 		mappingJacksonValue.setFilters(filters);
 		

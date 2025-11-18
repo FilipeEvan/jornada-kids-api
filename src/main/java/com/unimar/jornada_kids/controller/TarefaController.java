@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,7 +64,7 @@ public class TarefaController {
 		FilterProvider filters = new SimpleFilterProvider()
 				.addFilter("CriancaFilter", criancaFilter)
 				.addFilter("ResponsavelFilter", responsavelFilter)
-				.addFilter("TarefaFilter", tarefaFilter);;
+				.addFilter("TarefaFilter", tarefaFilter);
 		
 		mappingJacksonValue.setFilters(filters);
 		
@@ -114,14 +115,14 @@ public class TarefaController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PostMapping("/{id}/concluir")
+	@PutMapping("/{id}/concluir")
 	public ResponseEntity<Void> concluirTarefa(@PathVariable int id) {
 		tarefaService.concluir(id);	
 
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PostMapping("/{id}/avaliar")
+	@PutMapping("/{id}/avaliar")
 	public ResponseEntity<Void> avaliarTarefa(
 			@PathVariable int id, 
 			@Valid @RequestBody TarefaAvaliadaDTO tarefaAvaliada) {

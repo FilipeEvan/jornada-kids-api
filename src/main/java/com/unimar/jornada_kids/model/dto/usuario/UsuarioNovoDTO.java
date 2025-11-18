@@ -34,8 +34,13 @@ public class UsuarioNovoDTO {
 	@NotNull(message = "O tipo de usuário não pode ser nulo")
 	private TipoUsuario tipo;
 
-	public UsuarioNovoDTO(String nomeCompleto, String nomeUsuario, String email, String telefone, String senha, 
-			TipoUsuario tipo) {
+	public UsuarioNovoDTO(
+			@NotBlank(message = "O nome completo não pode estar em branco") @Size(min = 2, message = "O nome completo deve ter pelo menos 2 caracteres") String nomeCompleto,
+			@NotBlank(message = "O nome de usuário não pode estar em branco") @Size(min = 2, message = "O nome de usuário deve ter pelo menos 2 caracteres") String nomeUsuario,
+			@NotBlank(message = "O e-mail não pode estar em branco") @Email(message = "O e-mail deve estar em um formato válido") String email,
+			@Size(min = 10, max = 15, message = "O telefone deve ter entre 10 e 15 dígitos") @NotBlank(message = "O telefone não pode estar em branco") String telefone,
+			@Size(min = 6, message = "A senha deve ter pelo menos 6 caracteres") @NotBlank(message = "A senha não pode estar em branco") String senha,
+			@NotNull(message = "O tipo de usuário não pode ser nulo") TipoUsuario tipo) {
 		super();
 		this.nomeCompleto = nomeCompleto;
 		this.nomeUsuario = nomeUsuario;

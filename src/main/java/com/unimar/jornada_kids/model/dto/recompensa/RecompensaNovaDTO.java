@@ -29,7 +29,11 @@ public class RecompensaNovaDTO {
 	@NotNull(message = "A situação da recompensa não pode ser nula")
 	private SituacaoRecompensa situacao;
 
-	public RecompensaNovaDTO(Integer idResponsavel, String titulo, long pontuacaoNecessaria, int quantidade, SituacaoRecompensa situacao) {
+	public RecompensaNovaDTO(@NotNull(message = "O id do responsável não pode ser nulo") Integer idResponsavel,
+			@NotBlank(message = "O título não pode estar em branco") @Size(min = 2, message = "O título deve ter pelo menos 2 caracteres") String titulo,
+			@NotNull(message = "A pontuação necessária não pode ser nula") @Positive(message = "A pontuação necessária não pode ser zero ou negativa") long pontuacaoNecessaria,
+			@NotNull(message = "A quantidade não pode ser nula") @Positive(message = "A quantidade não pode ser zero ou negativa") int quantidade,
+			@NotNull(message = "A situação da recompensa não pode ser nula") SituacaoRecompensa situacao) {
 		super();
 		this.idResponsavel = idResponsavel;
 		this.titulo = titulo;

@@ -38,8 +38,13 @@ public class TarefaNovaDTO {
 	@Future(message = "A data e hora limite deve ser no futuro")
 	private LocalDateTime dataHoraLimite;
 
-	public TarefaNovaDTO(Integer idResponsavel, Integer idCrianca, String titulo, String descricao, long pontuacaoTotal,
-			PrioridadeTarefa prioridade, LocalDateTime dataHoraLimite) {
+	public TarefaNovaDTO(@NotNull(message = "O id do responsável não pode ser nulo") Integer idResponsavel,
+			@NotNull(message = "O id da criança não pode ser nulo") Integer idCrianca,
+			@NotBlank(message = "O título não pode estar em branco") @Size(min = 2, message = "O título deve ter pelo menos 2 caracteres") String titulo,
+			@NotBlank(message = "A descrição não pode estar em branco") String descricao,
+			@NotNull(message = "A pontuação total não pode ser nula") @Positive(message = "A pontuação total não pode ser zero ou negativa") long pontuacaoTotal,
+			@NotNull(message = "A prioridade não pode ser nula") PrioridadeTarefa prioridade,
+			@NotNull(message = "A data e hora limite não pode ser nula") @Future(message = "A data e hora limite deve ser no futuro") LocalDateTime dataHoraLimite) {
 		super();
 		this.idResponsavel = idResponsavel;
 		this.idCrianca = idCrianca;
