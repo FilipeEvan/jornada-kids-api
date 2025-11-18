@@ -1,17 +1,16 @@
-FROM maven:3.9.6-jdk-17-slim-bullseye AS build
+FROM ubuntu:latest AS build
 
-WORKDIR /app
+RUN apt-get update
 
-COPY pom.xml .
-RUN mvn dependency:go-offline
+RUN apt-get update && apt-get install -y openjdk-17-jdk maven
+COPY . .
 
-COPY src /app/src
 RUN mvn clean install -DskipTests
 
-FROM eclipse-temurin:17-jre-focal
+FROM eclipse-temurin:17-jdk-focal
 
 EXPOSE 8080
 
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /target/*.jar app.jar
 
-ENTRYPOINT [ "java", "-jar", "/app.jar" ]
+ENTRYPOINT [ "java", "-jar", "app.jar" ]
