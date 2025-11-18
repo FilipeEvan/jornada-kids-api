@@ -7,7 +7,7 @@ COPY . .
 RUN apt-get install maven -y
 RUN mvn clean install -DskipTests
 
-eclipse-temurin:17-jdk-focal
+FROM eclipse-temurin:17-jdk-focal
 
 EXPOSE 8080
 
